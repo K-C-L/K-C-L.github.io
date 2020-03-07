@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8" />
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+	<script src="https://unpkg.com/dropbox@4.0.3/dist/Dropbox-sdk.min.js"></script>
+	<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/superhero/bootstrap.min.css" rel="stylesheet" integrity="sha384-R/oa7KS0iDoHwdh4Gyl3/fU7pgvSCt7oyuQ79pkw+e+bMWD9dzJJa+Zqd+XJS0AD" crossorigin="anonymous">
+	<style media="screen">
+		body{margin: 0 auto;
+			text-align: center;
+		}
+		#bigfont{
+			font-size: 96pt;
+		}
+	</style>
+</head>
+
+<body class="p-3">
+
+	<h1 class="mb-3"><font color='#FF773E'>Recording</font></h1>
+	<h4>Recording stops after <font color='#FF773E'>2</font> seconds</h4>
+	<h2>Start Recordingをクリックし</h2>
+	<h2>次の文字を読み上げてください</h2>
+	<h1 id="random"></h1>
+
+	<div id="app">
+		<button class="btn btn-danger" type="button" v-if="status=='ready'" @click="startRecording">
+			Start Recording
+		</button>
+		<!--<button class="btn btn-primary" type="button" v-if="status=='recording'" @click="stopRecording">Stop Recording</button>-->
+		<!--<h1 class="btn btn-primary" v-if="status=='recording'" id="random"></h1>-->
+	</div>
+	<script src="audio.js"></script>
+
+	<script id="date">
+		document.write(Date());
+	</script>
+
+
+</body>
+
+</html>
