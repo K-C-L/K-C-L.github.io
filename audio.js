@@ -23,7 +23,6 @@ new Vue({
 		stopRecording() {
 			this.recorder.stop();
 			this.status = 'ready';
-			//document.getElementById('random');
 			document.getElementById("random").innerHTML = "";
 
 		},
