@@ -2,7 +2,7 @@ new Vue({
 	el: '#app',
 	//変数定義
 	data: {
-		status: 'init',     // 状況
+		status: 'ready',     // 状況
 		recorder: null,     // 音声にアクセスする "MediaRecorder" のインスタンス
 		audioData: [],      // 入力された音声データ
 		audioExtension: '',  // 音声ファイルの拡張子
@@ -44,7 +44,7 @@ new Vue({
 	},
 	//メイン動作
 	mounted() {
-		navigator.mediaDevices.getUserMedia({ audio: true })
+		navigator.mediaDevices.getUserMedia({ video: false, audio: true })
 			.then(stream => {
 
 				this.recorder = new MediaRecorder(stream);
