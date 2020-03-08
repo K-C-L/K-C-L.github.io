@@ -21,7 +21,7 @@ new Vue({
 		},
 
 		stopRecording() {
-			this.recorder.stop();
+			this.recorder.pause();
 			this.status = 'ready';
 			document.getElementById("random").innerHTML = "";
 
@@ -35,6 +35,7 @@ new Vue({
 			}
 			return '.'+ extension;
 		},
+
 		randomClganerate() {
 			let cls = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん";
 			let length = cls.length;
@@ -56,11 +57,8 @@ new Vue({
 
 				//オーディオ収録を終了した時の処理
 				this.recorder.addEventListener('stop', () => {
-
 					const audioBlob = new Blob(this.audioData);
 					this.audioData = [];
-
-					
 
 					//Dropboxにアップロード
 					let dbx = new Dropbox.Dropbox({ accessToken: this.apihash });
@@ -73,11 +71,10 @@ new Vue({
 					//a.download = Math.floor(Date.now() / 1000) + this.audioExtension;
 					//document.body.appendChild(a);
 					//a.click();
-
 				});
+
 				this.status = 'ready';
 
 			});
-
 	}
 });
