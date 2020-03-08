@@ -14,21 +14,24 @@ new Vue({
 		startRecording() {
 			this.status = 'recording';
 			this.audioData = [];
-			if(this.recorder.state === "inactive"){
-				this.recorder.start();
-			}else if(this.recorder.state === "paused"){
-				this.recorder.resume();
-			}
 			this.randomcl = this.randomClganerate();
 			document.getElementById("random").innerHTML = '<h1 class="btn btn-primary"><div id="bigfont">『'+this.randomcl+'』</div></h1>';
+
+			if(this.recorder.state==="inactive"){
+				this.recorder.start();
+			}else if(this.recorder.state==="paused"){
+				this.recorder.resume();
+			}
+
 			setTimeout(this.stopRecording,2100);//2秒後に停止
 		},
 
 		stopRecording() {
+			this.recorder.requestData();
 			this.recorder.pause();
+			//this.recorder.stop();
 			this.status = 'ready';
 			document.getElementById("random").innerHTML = "";
-
 		},
 
 		getExtension(audioType) {
@@ -53,13 +56,13 @@ new Vue({
 
 				this.recorder = new MediaRecorder(stream);
 
-				//オーディオ収録時
+				//オーディオデータ利用可能時
 				this.recorder.addEventListener('dataavailable', e => {
 					this.audioData.push(e.data);
 					this.audioExtension = this.getExtension(e.data.type);
 				});
 
-				//オーディオ収録を終了した時の処理
+				//オーディオ一時停止時
 				this.recorder.addEventListener('pause', () => {
 					let audioBlob = new Blob(this.audioData);
 
