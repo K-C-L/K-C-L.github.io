@@ -16,29 +16,49 @@
 		#bigfont{
 			font-size: 96pt;
 		}
+		#bt{
+			margin: 60px auto;
+		}
+		#set3{
+			margin: 40px auto;
+		}
 	</style>
 </head>
 
 <body class="p-3">
 
-	<h1 class="mb-3"><font color='#FF773E'>Recording</font></h1>
-	<h4>Recording stops after <font color='#FF773E'>2</font> seconds</h4>
-	<h2>Start Recordingをクリックし</h2>
-	<h2>次の文字を読み上げてください</h2>
-
 	<div id="app">
+		<h2 class="mb-3"><font color='#FF773E'>日本語音声収集</font></h2>
+		<div id='set'>
+			<h3>Start Recordingをクリックし</h3>
+			<h3>次の文字を読み上げてください</h3>
+		</div>
+
 		<h1 id="random"></h1>
-		<button class="btn btn-danger" type="button" v-if="status=='ready'" @click="startRecording">
+		<h2 id="random2"></h2>
+		<button class="btn btn-danger" type="button" v-if="status=='ready'" @click="startRecording" id='bt'>
 			Start Recording
 		</button>
-		<!--<button class="btn btn-primary" type="button" v-if="status=='recording'" @click="stopRecording">Stop Recording</button>-->
+		<button class="btn btn-primary" type="button" v-if="status=='end'" @click="relode">もう一度、協力する</button>
 		<h1 v-if="status=='recording'" id="random"></h1>
+
+		<div id='set2'>
+			<h4><font color='#FF773E'>2秒間ごとに</font></h4>
+			<h4><font color='#FF773E'>文字が切り替わります</font></h4>
+			<div id='set3'>
+				<h4>※iPhoneをお使いの方へ</h4>
+				<h4>設定 -> safari -> 詳細</h4>
+				<h4>-> Experimental Features</h4>
+				<h4>-> <font color='#FF773E'>MeddiaRecoder</font></h4>
+				<h4>をonにしてください</h4>
+			</div>
+		</div>
 	</div>
 	<script src="audio.js"></script>
 
-	<script id="date">
+	<!--<script id="date">
 		document.write(Date());
-	</script>
+	</script>-->
 
 
 </body>
