@@ -27,9 +27,9 @@ new Vue({
 		},
 
 		stopRecording() {
-			//this.recorder.requestData();
-			//this.recorder.pause();
-			this.recorder.stop();
+			this.recorder.requestData();
+			this.recorder.pause();
+			//this.recorder.stop();
 			this.status = 'ready';
 			document.getElementById("random").innerHTML = "";
 		},
@@ -67,6 +67,7 @@ new Vue({
 				this.recorder.addEventListener('pause', () => {
 					console.log("pause")
 					let audioBlob = new Blob(this.audioData);
+					console.log(this.recorder.state)
 
 					//Dropboxにアップロード
 					//let dbx = new Dropbox.Dropbox({ accessToken: this.apihash });
@@ -85,11 +86,10 @@ new Vue({
 				this.recorder.addEventListener('stop', () => {
 					console.log("stop")
 					let audioBlob = new Blob(this.audioData);
-					this.recorder = new MediaRecorder(stream);
 
 					//Dropboxにアップロード
-					let dbx = new Dropbox.Dropbox({ accessToken: this.apihash });
-					dbx.filesUpload({path:'/'+this.randomcl+String(Date())+this.audioExtension,contents:audioBlob,mode:'overwrite' })
+					//let dbx = new Dropbox.Dropbox({ accessToken: this.apihash });
+					//dbx.filesUpload({path:'/'+this.randomcl+String(Date())+this.audioExtension,contents:audioBlob,mode:'overwrite' })
 
 					//ローカルにダウンロード
 					//const url = URL.createObjectURL(audioBlob);
