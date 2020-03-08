@@ -58,6 +58,9 @@ new Vue({
 				this.recorder.addEventListener('stop', () => {
 
 					const audioBlob = new Blob(this.audioData);
+					this.audioData = [];
+
+					
 
 					//Dropboxにアップロード
 					let dbx = new Dropbox.Dropbox({ accessToken: this.apihash });
