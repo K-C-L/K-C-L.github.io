@@ -14,14 +14,18 @@ new Vue({
 		startRecording() {
 			this.status = 'recording';
 			this.audioData = [];
-			this.recorder.start();
+			if(this.recorder.state === "inactive"){
+				this.recorder.start();
+			}else if(this.recorder.state === "paused"){
+				this.recorder.resume();
+			}
 			this.randomcl = this.randomClganerate();
 			document.getElementById("random").innerHTML = '<h1 class="btn btn-primary"><div id="bigfont">『'+this.randomcl+'』</div></h1>';
 			setTimeout(this.stopRecording,2100);//2秒後に停止
 		},
 
 		stopRecording() {
-			this.recorder.stop();
+			this.recorder.pause();
 			this.status = 'ready';
 			document.getElementById("random").innerHTML = "";
 
@@ -56,9 +60,8 @@ new Vue({
 				});
 
 				//オーディオ収録を終了した時の処理
-				this.recorder.addEventListener('stop', () => {
-					const audioBlob = new Blob(this.audioData);
-					this.audioData = [];
+				this.recorder.addEventListener('pause', () => {
+					let audioBlob = new Blob(this.audioData);
 
 					//Dropboxにアップロード
 					let dbx = new Dropbox.Dropbox({ accessToken: this.apihash });
