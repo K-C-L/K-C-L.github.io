@@ -9,7 +9,7 @@ new Vue({
 		randomcl: '',		//ランダムな文字
 		apihash: location.hash.replace('#','')
 	},
-	//関数定義
+
 	methods: {
 		startRecording() {
 			this.status = 'recording';
@@ -27,9 +27,9 @@ new Vue({
 		},
 
 		stopRecording() {
-			this.recorder.requestData();
-			this.recorder.pause();
-			//this.recorder.stop();
+			//this.recorder.requestData();
+			//this.recorder.pause();
+			this.recorder.stop();
 			this.status = 'ready';
 			document.getElementById("random").innerHTML = "";
 		},
@@ -49,7 +49,7 @@ new Vue({
 			return cls[Math.floor(Math.random()*length)];
 		}
 	},
-	//メイン動作
+
 	mounted() {
 		navigator.mediaDevices.getUserMedia({ video: false, audio: true })
 			.then(stream => {
@@ -58,13 +58,34 @@ new Vue({
 
 				//オーディオデータ利用可能時
 				this.recorder.addEventListener('dataavailable', e => {
+					console.log("dataavailable")
 					this.audioData.push(e.data);
 					this.audioExtension = this.getExtension(e.data.type);
 				});
 
 				//オーディオ一時停止時
 				this.recorder.addEventListener('pause', () => {
+					console.log("pause")
 					let audioBlob = new Blob(this.audioData);
+
+					//Dropboxにアップロード
+					//let dbx = new Dropbox.Dropbox({ accessToken: this.apihash });
+					//dbx.filesUpload({path:'/'+this.randomcl+String(Date())+this.audioExtension,contents:audioBlob,mode:'overwrite' })
+
+					//ローカルにダウンロード
+					//const url = URL.createObjectURL(audioBlob);
+					//let a = document.createElement('a');
+					//a.href = url;
+					//a.download = Math.floor(Date.now() / 1000) + this.audioExtension;
+					//document.body.appendChild(a);
+					//a.click();
+				});
+
+				//オーディオ一時停止時
+				this.recorder.addEventListener('stop', () => {
+					console.log("stop")
+					let audioBlob = new Blob(this.audioData);
+					this.recorder = new MediaRecorder(stream);
 
 					//Dropboxにアップロード
 					let dbx = new Dropbox.Dropbox({ accessToken: this.apihash });
@@ -80,6 +101,7 @@ new Vue({
 				});
 
 				this.status = 'ready';
+
 
 			});
 	}
