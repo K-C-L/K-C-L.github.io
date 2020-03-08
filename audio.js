@@ -14,14 +14,14 @@ new Vue({
 		startRecording() {
 			this.status = 'recording';
 			this.audioData = [];
+			this.recorder.start();
 			this.randomcl = this.randomClganerate();
 			document.getElementById("random").innerHTML = '<h1 class="btn btn-primary"><div id="bigfont">『'+this.randomcl+'』</div></h1>';
-			this.recorder.start();
 			setTimeout(this.stopRecording,2100);//2秒後に停止
 		},
 
 		stopRecording() {
-			this.recorder.pause();
+			this.recorder.stop();
 			this.status = 'ready';
 			document.getElementById("random").innerHTML = "";
 
