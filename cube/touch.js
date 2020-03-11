@@ -1,95 +1,76 @@
-var ongoingTouches = [];
-
-function init(){
-	ongoingTouches = [];
-	var el = document.getElementsByTagName("canvas")[0];
-	el.addEventListener("touchstart", handleStart, false);
-	el.addEventListener("touchend", handleEnd, false);
-	el.addEventListener("touchcancel", handleCancel, false);
-	el.addEventListener("touchmove", handleMove, false);
-	console.log("initialized.");
+var can;
+var ct;
+var ox=0,oy=0,x=0,y=0;
+var mf=false;
+function mam_draw_init(){
+	//初期設定
+	can=document.getElementById("can");
+	can.addEventListener("touchstart",onDown,false);
+	can.addEventListener("touchmove",onMove,false);
+	can.addEventListener("touchend",onUp,false);
+	can.addEventListener("mousedown",onMouseDown,false);
+	can.addEventListener("mousemove",onMouseMove,false);
+	can.addEventListener("mouseup",onMouseUp,false);
+	ct=can.getContext("2d");
+	ct.strokeStyle="#000000";
+	ct.lineWidth=5;
+	ct.lineJoin="round";
+	ct.lineCap="round";
+	clearCan();
 }
 
-function handleStart(evt) {
-	evt.preventDefault();
-	console.log("touchstart.");
-	var el = document.getElementsByTagName("canvas")[0];
-	var ctx = el.getContext("2d");
-	var touches = evt.changedTouches;
+function onDown(event){
+	mf=true;
+	ox=event.touches[0].pageX-event.target.getBoundingClientRect().left;
+	oy=event.touches[0].pageY-event.target.getBoundingClientRect().top;
+	event.stopPropagation();
+}
 
-	for (var i = 0; i < touches.length; i++) {
-		console.log("touchstart:" + i + "...");
-		ongoingTouches.push(copyTouch(touches[i]));
-		var color = colorForTouch(touches[i]);
-		ctx.beginPath();
-		ctx.arc(touches[i].pageX, touches[i].pageY, 4, 0, 2 * Math.PI, false);  // a circle at the start
-		ctx.fillStyle = color;
-		ctx.fill();
-		console.log("touchstart:" + i + ".");
+function onMove(event){
+	if(mf){
+	x=event.touches[0].pageX-event.target.getBoundingClientRect().left;
+	y=event.touches[0].pageY-event.target.getBoundingClientRect().top;
+	drawLine();
+	ox=x;
+	oy=y;
+	event.preventDefault();
+	event.stopPropagation();
 	}
 }
 
-function handleMove(evt) {
-	evt.preventDefault();
-	var el = document.getElementsByTagName("canvas")[0];
-	var ctx = el.getContext("2d");
-	var touches = evt.changedTouches;
+function onUp(event){
+	mf=false;
+	event.stopPropagation();
+}
 
-	for (var i = 0; i < touches.length; i++) {
-		var color = colorForTouch(touches[i]);
-		var idx = ongoingTouchIndexById(touches[i].identifier);
+function onMouseDown(event){
+	ox=event.clientX-event.target.getBoundingClientRect().left;
+	oy=event.clientY-event.target.getBoundingClientRect().top ;
+	mf=true;
+}
 
-		if (idx >= 0) {
-			console.log("continuing touch "+idx);
-			ctx.beginPath();
-			console.log("ctx.moveTo(" + ongoingTouches[idx].pageX + ", " + ongoingTouches[idx].pageY + ");");
-			ctx.moveTo(ongoingTouches[idx].pageX, ongoingTouches[idx].pageY);
-			console.log("ctx.lineTo(" + touches[i].pageX + ", " + touches[i].pageY + ");");
-			ctx.lineTo(touches[i].pageX, touches[i].pageY);
-			ctx.lineWidth = 4;
-			ctx.strokeStyle = color;
-			ctx.stroke();
-
-			ongoingTouches.splice(idx, 1, copyTouch(touches[i]));  // swap in the new touch record
-			console.log(".");
-		}else {
-			console.log("can't figure out which touch to continue");
-		}
+function onMouseMove(event){
+	if(mf){
+		x=event.clientX-event.target.getBoundingClientRect().left;
+		y=event.clientY-event.target.getBoundingClientRect().top ;
+		drawLine();
+		ox=x;
+		oy=y;
 	}
 }
 
-function handleEnd(evt) {
-	evt.preventDefault();
-	console.log("touchend");
-	var el = document.getElementsByTagName("canvas")[0];
-	var ctx = el.getContext("2d");
-	var touches = evt.changedTouches;
-
-	for (var i = 0; i < touches.length; i++) {
-		var color = colorForTouch(touches[i]);
-		var idx = ongoingTouchIndexById(touches[i].identifier);
-
-		if (idx >= 0) {
-			ctx.lineWidth = 4;
-			ctx.fillStyle = color;
-			ctx.beginPath();
-			ctx.moveTo(ongoingTouches[idx].pageX, ongoingTouches[idx].pageY);
-			ctx.lineTo(touches[i].pageX, touches[i].pageY);
-			ctx.fillRect(touches[i].pageX - 4, touches[i].pageY - 4, 8, 8);  // and a square at the end
-			ongoingTouches.splice(idx, 1);  // remove it; we're done
-		}else{
-			console.log("can't figure out which touch to end");
-		}
-	}
+function onMouseUp(event){
+	mf=false;
 }
 
-function handleCancel(evt) {
-	evt.preventDefault();
-	console.log("touchcancel.");
-	var touches = evt.changedTouches;
+function drawLine(){
+	ct.beginPath();
+	ct.moveTo(ox,oy);
+	ct.lineTo(x,y);
+	ct.stroke();
+}
 
-	for (var i = 0; i < touches.length; i++) {
-	var idx = ongoingTouchIndexById(touches[i].identifier);
-	ongoingTouches.splice(idx, 1);  // remove it; we're done
-	}
+function clearCan(){
+	ct.fillStyle="rgb(255,255,255)";
+	ct.fillRect(0,0,can.getBoundingClientRect().width,can.getBoundingClientRect().height);
 }
