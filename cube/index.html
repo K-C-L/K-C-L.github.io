@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="cache-control" content="no-cache" />
+	<meta http-equiv="expires" content="0" />
+	<script type="text/javascript" src="touch.js"></script>
+	<!--<script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>-->
+	<script src="https://unpkg.com/dropbox@4.0.3/dist/Dropbox-sdk.min.js"></script>
+	<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/superhero/bootstrap.min.css" rel="stylesheet" integrity="sha384-R/oa7KS0iDoHwdh4Gyl3/fU7pgvSCt7oyuQ79pkw+e+bMWD9dzJJa+Zqd+XJS0AD" crossorigin="anonymous">
+	<style media="screen">
+		body{
+			margin: 0 auto;
+			text-align: center;
+		}
+		img{
+			margin: 20px;
+		}
+		#bigfont{
+			font-size: 96pt;
+		}
+	</style>
+</head>
+
+<body class="p-3" onload="init()">
+
+	<div id="app">
+		<h1 class="mb-3"><font color='#FF773E'>立体描画</font></h1>
+		<div id='set'>
+			<h2>下の図を参考に</h2>
+			<h2>同じ立方体を描いてください</h2>
+			<img src="cube.jpg" alt="cube" style="border:solid black 3px;">
+		</div>
+
+		<canvas id="canvas" width="600" height="600" style="border:solid black 3px;"></canvas>
+		<br />
+		<button onclick="init()">Initialize</button>
+		<br />
+
+
+		<!--
+		<h1 id="random"></h1>
+		<h2 id="random2"></h2>
+		<button class="btn btn-danger" type="button" v-if="status=='ready'" @click="startRecording" id='bt'>
+			Start Recording
+		</button>
+		<button class="btn btn-primary" type="button" v-if="status=='end'" @click="relode">もう一度、協力する</button>
+		<h1 v-if="status=='recording'" id="random"></h1>
+		-->
+	</div>
+
+</body>
+
+</html>
