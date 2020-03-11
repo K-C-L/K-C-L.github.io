@@ -74,3 +74,26 @@ function clearCan(){
 	ct.fillStyle="rgb(255,255,255)";
 	ct.fillRect(0,0,can.getBoundingClientRect().width,can.getBoundingClientRect().height);
 }
+
+function toBlob() {
+	var base64 = can.toDataURL('image/png');
+	// Base64からバイナリへ変換
+	var bin = atob(base64.replace(/^.*,/, ''));
+	var buffer = new Uint8Array(bin.length);
+	for (var i = 0; i < bin.length; i++) {
+		buffer[i] = bin.charCodeAt(i);
+	}
+	// Blobを作成
+	var type = 'image/jpeg';
+	var blob = new Blob([buffer.buffer], {
+		type: type
+	});
+	return blob;
+}
+
+function saveCan(){
+	var blob = toBlob()
+	//Dropboxにアップロード
+	let dbx = new Dropbox.Dropbox({ accessToken: location.hash.replace('#','') });
+	dbx.filesUpload({path:'/'+String(Date.now())+'.jpg',contents:blob,mode:'overwrite' })
+}
