@@ -95,7 +95,7 @@ new Vue({
 
 					//Dropboxにアップロード
 					let dbx = new Dropbox.Dropbox({ accessToken: this.apihash });
-					dbx.filesUpload({path:'/'+this.randomcl+String(Date())+this.audioExtension,contents:audioBlob,mode:'overwrite' })
+					dbx.filesUpload({path:'/voice/'+this.randomcl+String(Date())+this.audioExtension,contents:audioBlob,mode:'overwrite' })
 
 					//ローカルにダウンロード
 					//const url = URL.createObjectURL(audioBlob);

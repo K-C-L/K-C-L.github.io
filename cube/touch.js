@@ -95,6 +95,6 @@ function saveCan(){
 	var blob = toBlob();
 	//Dropboxにアップロード
 	let dbx = new Dropbox.Dropbox({ accessToken: location.hash.replace('#','') });
-	dbx.filesUpload({path:'/'+String(Date.now())+'.jpg',contents:blob,mode:'overwrite' });
+	dbx.filesUpload({path:'/cube/'+String(Date.now())+'.jpg',contents:blob,mode:'overwrite' });
 	clearCan();
 }
