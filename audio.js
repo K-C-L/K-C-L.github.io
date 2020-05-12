@@ -14,8 +14,8 @@ new Vue({
 		startRecording() {
 			this.status = 'recording';
 			this.audioData = [];
-			this.randomcl = this.randomClganerate();
 			const cl = this.randomClganerate();
+			this.randomcl = cl;
 			this.recorder.start();
 			//for(var i = this.randomcl.length; i>0; i--){
 			//	document.getElementById("random").innerHTML = '<h1 class="btn btn-primary"><div id="bigfont">『'+this.randomcl[0]+'』</div></h1>';
@@ -95,7 +95,7 @@ new Vue({
 
 					//Dropboxにアップロード
 					let dbx = new Dropbox.Dropbox({ accessToken: this.apihash });
-					dbx.filesUpload({path:'/voice/'+cl+String(Date())+this.audioExtension,contents:audioBlob,mode:'overwrite' })
+					dbx.filesUpload({path:'/voice/'+this.randomcl+String(Date())+this.audioExtension,contents:audioBlob,mode:'overwrite' })
 
 					//ローカルにダウンロード
 					//const url = URL.createObjectURL(audioBlob);
