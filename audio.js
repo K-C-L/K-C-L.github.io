@@ -15,7 +15,7 @@ new Vue({
 			this.status = 'recording';
 			this.audioData = [];
 			this.randomcl = this.randomClganerate();
-			var cl = this.randomClganerate();
+			const cl = this.randomClganerate();
 			this.recorder.start();
 			//for(var i = this.randomcl.length; i>0; i--){
 			//	document.getElementById("random").innerHTML = '<h1 class="btn btn-primary"><div id="bigfont">『'+this.randomcl[0]+'』</div></h1>';
